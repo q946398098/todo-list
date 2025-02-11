@@ -57,40 +57,66 @@ const removeTodo = (index) => {
 
 <template>
   <div class="todo-list">
-    <h1>Todo List</h1>
+
+
     <input
+        style="width: 40%;height: 30px"
         v-model="newTodo"
         @keyup.enter="addTodo"
         placeholder="Add a new task"
     />
-    <ul>
-<!--:class="{ completed: todo.completed } 表示todo.completed 为true的时候添加 completed 类-->
-      <li v-for="(todo, index) in todos" :key="index" :class="{ completed: todo.completed }">
-        <input
-            type="checkbox"
-            v-model="todo.completed"
-        />
-        <span>{{ todo.text }}</span>
-        <button @click="removeTodo(index)">Delete</button>
-      </li>
-    </ul>
-<!--    <div>
-      <div class="todo"></div>
-      <div class="finish"></div>
-    </div>-->
+
+    <div class="content" style="display: flex;justify-content: space-between">
+
+      <div>
+        <h3 style="text-align: center">To Do List</h3>
+        <ul class="need_todo">
+          <!--:class="{ completed: todo.completed } 表示todo.completed 为true的时候添加 completed 类-->
+          <li v-for="(todo, index) in todos.filter(todo => !todo.completed)" :key="index" :class="{ completed: todo.completed }">
+                <button class="primary" @click="todo.completed = !todo.completed">Done</button>
+<!--            <input-->
+<!--                type="checkbox"-->
+<!--                v-model="todo.completed"-->
+<!--            />-->
+
+            <span>{{ todo.text }}</span>
+            <button @click="removeTodo(index)">Delete</button>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="text-align: center">Completed</h3>
+        <ul class="completed">
+          <!--:class="{ completed: todo.completed } 表示todo.completed 为true的时候添加 completed 类-->
+          <li v-for="(todo, index) in todos.filter(todo => todo.completed)" :key="index" :class="{ completed: todo.completed }">
+
+            <button @click="todo.completed = !todo.completed">To Do</button>
+<!--            <input-->
+<!--                type="checkbox"-->
+<!--                v-model="todo.completed"-->
+<!--            />-->
+            <span>{{ todo.text }}</span>
+            <button @click="removeTodo(index)">Delete</button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 
 <style>
 .todo-list {
-  max-width: 400px;
-  margin: 0 auto;
+  width: 100%;
   padding: 20px;
-  text-align: center;
+}
+
+.content div{
+  width: 45%;
 }
 
 ul {
+  width: 100%;
   list-style-type: none;
   padding: 0;
 }
@@ -111,6 +137,10 @@ li {
 
 input[type="checkbox"] {
   margin-right: 10px;
+}
+
+button.primary{
+  background-color: blue;
 }
 
 button {
